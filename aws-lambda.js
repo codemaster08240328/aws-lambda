@@ -17,9 +17,9 @@ exports.handler = (event, context, callback) => {
       const res = await con.query(phrase_sql)
       if (!!res) {
         const { phrase_id } = res[0] 
-        handleVolumeData(phrase_id, item)
+        await handleVolumeData(phrase_id, item)
       } else {
-        insertField(item)
+        await insertField(item)
       }
     })
 
