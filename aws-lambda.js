@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise');
 const dt = new Date()
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event) => {
 
   const con = await mysql.createConnection({
     host: process.env.RDS_HOSTNAME,
@@ -27,31 +27,18 @@ exports.handler = async (event, context, callback) => {
     })
 
     console.log('success')
-    const response = {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({
-        message: `SQS event processed.`,
-        input: event,
-      })
-    };
 
-    callback(null, response)
+    return JSON.stringify({
+      statusCode: 200,
+      message: 'success'
+    })
   } catch(e) {
     console.log(e)
-    const response = {
+    
+    return JSON.stringify({
       statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify({
-        error: e.message
-      })
-    };
-
-    callback(null, response)
+      message: 'Server error'
+    })
   } 
 }
 
